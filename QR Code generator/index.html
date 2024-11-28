@@ -1,0 +1,66 @@
+<!-- This code sets up a basic web page that allows users to enter text or a URL, click a button, and generate a QR code.  -->
+<!-- The QR code is displayed using an external API (https://api.qrserver.com) and shown within an image element when the input is valid. If the input is empty, the input field is temporarily highlighted to indicate an error.-->
+<!-- The CSS classes show-img and error are used to control the display and error indication, respectively. -->
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QR Code Generator</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <p>Enter your text or URL</p>
+        <input type="text" placeholder="Text or URL" id="qrText">
+
+        <!-- This line creates a <div> element with the id imgBox, used to contain the QR code image. -->
+        <div id="imgBox">
+            <!-- This line creates an <img> element with an empty "src" attribute and an "id qrImage", which will later be used to display the generated QR code. -->
+            <img src="" id="qrImage">  
+
+        </div>
+        <!-- This line creates a button labeled "Generate QR Code" that calls the generateQR() JavaScript function when clicked. -->
+        <button onclick="generateQR()">Generate QR Code</button>
+
+        
+    </div>
+    
+<script>
+
+    // Declares a variable imgBox and assigns it the <div> element with the id imgBox using document.getElementById.
+    let imgBox = document.getElementById("imgBox");
+    // Declares a variable qrImage and assigns it the <img> element with the id qrImage.
+    let qrImage = document.getElementById("qrImage");
+    // Declares a variable qrText and assigns it the <input> element with the id qrText.
+    let qrText = document.getElementById("qrText");  //getting the user entered text from the page 
+
+    // Defines the function generateQR that generates the QR code.
+    function generateQR(){
+        //this if statement makes sure that the length of the text should be greater than 0
+        if(qrText.value.length > 0){
+            
+            // If the input is not empty, this line sets the src attribute of the qrImage <img> element to the URL of a QR code generator API, appending the user's input to the data parameter.
+            // The URL https://api.qrserver.com/v1/create-qr-code/?size=150x150&data= generates a QR code of size 150x150 pixels.
+            qrImage.src = "https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=" + qrText.value;  //this api helps in generating qr code
+            imgBox.classList.add("show-img");   //for displaying the qr code image
+        }else{
+            // If the input field is empty, this line adds the CSS class error to the qrText input field, likely to visually indicate the error state (e.g., highlighting the input field).
+            qrText.classList.add('error');
+
+            // Uses setTimeout to remove the error class from the qrText input field after 1 second (1000 milliseconds), clearing the error indication.
+            setTimeout(()=>{
+                qrText.classList.remove('error');
+
+            },1000);
+
+        }
+        
+    }
+</script>    
+</body>
+</html>

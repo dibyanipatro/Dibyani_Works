@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Music Player</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://kit.fontawesome.com/261bf666e3.js" crossorigin="anonymous"></script>
+</head>
+<body>
+    <div class="container">
+        <div class="music-player">
+            <nav>
+                <div class="circle" id="toggleList">
+                    <i class="fa-solid fa-angle-left"></i>
+                </div>
+                <div class="circle">
+                    <i class="fa-solid fa-bars"></i>
+                </div>
+            </nav>
+            <img src="images/arijit singh.jpg" class="song-img" id="songImg">
+            <h1 id="songTitle">Chaleya</h1>
+            <p id="songArtist">Arijit Singh, Anirudh Ravichandren, Shilpa Rao</p>
+
+            <audio id="song">
+                <source src="songs/Chaleya Jawan 128 Kbps.mp3" type="audio/mpeg"> 
+            </audio>
+            <input type="range" value="0" id="progress">
+            <div class="time-display">
+                <span id="currentTime">00:00</span>
+                <span id="remainingTime">00:00</span>
+            </div>
+
+            <div class="controls">
+                <div id="prevSong"><i class="fa-solid fa-backward-step"></i></div>
+                <div onclick="playPause()"><i class="fa-solid fa-play" id="ctrlIcon"></i></div>
+                <div id="nextSong"><i class="fa-solid fa-forward-step"></i></div>
+            </div>
+
+        </div>
+        <div class="song-list" id="songList">
+        </div>
+    </div>
+
+<script>
+
+const songData = [
+    {
+        title: "Ram Siya Ram",
+        artist: "Sachet Tandon",
+        img: "images/ram siya ram.jpg",
+        file: "images/Ram Siya Ram - Adipurush 128 Kbps.mp3"
+    },
+    {
+        title: "Chaleya",
+        artist: "Arijit Singh, Anirudh Ravichandren, Shilpa Rao",
+        img: "images/arijit singh.jpg",
+        file: "images/Chaleya Jawan 128 Kbps.mp3"
+    },
+    {
+        title: "Tum Se Hi",
+        artist: "Mohit Chauhan",
+        img: "images/tum se hi.jpg",
+        file: "images/Tum Se Hi Jab We Met 128 Kbps.mp3"
+    },
+    {
+        title: "Maate Vinadhuga",
+        artist: "Sid Sriram",
+        img: "images/maate vinaduga.jpeg",
+        file: "images/[iSongs.info] 01 - Maate Vinadhuga.mp3"
+    }
+    // Add more songs as needed
+];
+
+    let progress = document.getElementById("progress");
+    let song = document.getElementById("song");
+    let ctrlIcon = document.getElementById("ctrlIcon");
+    let songImg = document.getElementById("songImg");
+    let songTitle = document.getElementById("songTitle");
+    let songArtist = document.getElementById("songArtist");
+    let songList = document.getElementById("songList");
+    let toggleList = document.getElementById("toggleList");
+    let currentTimeElem = document.getElementById("currentTime");
+    let remainingTimeElem = document.getElementById("remainingTime");
+
+    let currentSongIndex = 0;
+
+    function loadSong(index){
+        let songInfo = songData[index];
+        songImg.src = songInfo.img;
+        songTitle.textContent = songInfo.title;
+        songArtist.textContent = songInfo.artist;
+        song.src = songInfo.file;
+        // playPause();
+        song.play();  // Play the song after loading
+        ctrlIcon.classList.add("fa-pause");
+        ctrlIcon.classList.remove("fa-play");
+
+    }
+    function formatTime(seconds) {
+        const minutes = Math.floor(seconds / 60);
+        const secs = Math.floor(seconds % 60);
+        return `${minutes.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+}
+
+    song.onloadedmetadata = function(){
+        progress.max = song.duration;
+        progress.value = song.currentTime;
+    }
+    song.addEventListener('timeupdate', () => {
+        progress.value = song.currentTime;
+        currentTimeElem.textContent = formatTime(song.currentTime);
+        remainingTimeElem.textContent = formatTime(song.duration - song.currentTime);
+    });
+
+    //function for playing and pausing the song
+    function playPause(){
+        if(ctrlIcon.classList.contains("fa-pause")){
+            song.pause();
+            ctrlIcon.classList.remove("fa-pause");
+            ctrlIcon.classList.add("fa-play");
+        }else{
+            song.play();
+            ctrlIcon.classList.add("fa-pause");
+            ctrlIcon.classList.remove("fa-play");
+
+        }
+    }
+    //for restarting the song at every 500ms
+    if(song.play()){
+        setInterval(()=>{
+            progress.value = song.currentTime;
+        },500);
+    }
+
+    //when we click on any point of the progress bar the song will start from that point of time
+    progress.onchange = function(){
+        song.play();
+        song.currentTime = progress.value;
+        ctrlIcon.classList.add("fa-pause");
+        ctrlicon.classList.remove("fa-play");
+    }
+    function displaySongList() {
+    songList.innerHTML = '<ul>' + songData.map((song, index) => `
+        <li onclick="selectSong(${index})">
+            ${song.title} - ${song.artist}
+        </li>
+    `).join('') + '</ul>';
+    }
+    function selectSong(index) {
+        currentSongIndex = index;
+        loadSong(index);
+        songList.classList.remove("show");
+    }
+    toggleList.onclick = function() {
+        songList.classList.toggle("show");
+    }
+    document.getElementById("prevSong").onclick = function() {
+        currentSongIndex = (currentSongIndex - 1 + songData.length) % songData.length;
+        loadSong(currentSongIndex);
+        song.play();  // Play the song after loading
+    }
+    document.getElementById("nextSong").onclick = function() {
+        currentSongIndex = (currentSongIndex + 1) % songData.length;
+        loadSong(currentSongIndex);
+        song.play();  // Play the song after loading
+    }
+
+    // Event listener for when the song ends
+    song.addEventListener('ended', () => {
+        currentSongIndex = (currentSongIndex + 1) % songData.length;
+        loadSong(currentSongIndex);
+        song.play(); // Automatically play the next song
+    });
+    window.onload = function() {
+        displaySongList();
+        loadSong(currentSongIndex);
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</script>   
+</body>
+</html>

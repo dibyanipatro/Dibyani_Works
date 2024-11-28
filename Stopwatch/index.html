@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stopwatch</title>
+    <!-- Link to external CSS file -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Title of the page -->
+    <h1>Stopwatch</h1>
+    <!-- Stopwatch container -->
+    <div class="stopwatch">
+        <!-- Display area for the stopwatch time -->
+        <h1 id="displayTime">00:00:00</h1>
+        <!-- Buttons for controlling the stopwatch -->
+        <div class="buttons">
+            <!-- Stop button (also used to resume) -->
+            <img src="images\stop button.png" onclick="watchStop()">
+            <!-- Start button -->
+            <img src="images\play button.png" onclick="watchStart()">
+            <!-- Reset button -->
+            <img src="images\reset button.png" onclick="watchReset()">
+        </div>
+    </div>
+
+<script>
+    // Variables to store time components
+    let [seconds, minutes, hours] = [0, 0, 0];
+    // Reference to the display area for updating time
+    let displayTime = document.getElementById("displayTime");
+    // Timer reference
+    let timer = null;
+    // Flag to track if the stopwatch is running
+    let isRunning = false;
+
+    // Function to increment the time and update the display
+    function stopwatch(){
+        seconds++;
+        if(seconds == 60){
+            seconds = 0;
+            minutes++;
+            if(minutes == 60){
+                minutes = 0;
+                hours++;
+            }
+        }
+
+        // Format the time values to ensure two digits
+        let h = hours < 10 ? "0" + hours : hours;
+        let m = minutes < 10 ? "0" + minutes : minutes;
+        let s = seconds < 10 ? "0" + seconds : seconds;
+
+        // Update the display with the formatted time
+        displayTime.innerHTML = h + ":" + m + ":" + s;
+    }
+
+    // Function to start or resume the stopwatch
+    function watchStart(){
+        if(timer != null){
+            clearInterval(timer);
+        }
+        isRunning = true;  // Set running state to true
+        timer = setInterval(stopwatch, 1000);  // Update time every second
+    }
+
+    // Function to stop or resume the stopwatch based on its current state
+    function watchStop(){
+        if(isRunning){
+            clearInterval(timer);
+            isRunning = false;  // Set running state to false
+        }else{
+            watchStart();   // Resume the timer
+        }
+    }
+
+    // Function to reset the stopwatch to 00:00:00
+    function watchReset(){
+        clearInterval(timer);
+        [seconds, minutes, hours] = [0, 0, 0];  // Reset time values
+        displayTime.innerHTML = "00:00:00";  // Reset display
+        isRunning = false;  // Reset running state
+    }
+</script>
+</body>
+</html>

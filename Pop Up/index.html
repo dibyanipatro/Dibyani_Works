@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pop Up Notification</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Submit button to trigger the popup -->
+        <button type="submit" class="btn" onclick="openPopup()">Submit</button>
+        
+        <!-- Popup div that appears on submit -->
+        <div class="popup" id="popUp">
+            <!-- Checkmark image in the popup -->
+            <img src="images/check.png" alt="Success">
+            <h2>Thank You!</h2>
+            <p>Your details have been saved successfully!!!! Thanks....:)</p>
+            <!-- OK button to close the popup -->
+            <button type="button" onclick="closePopup()">OK</button>
+        </div>
+    </div>
+
+<script>
+// JavaScript to handle opening and closing of the popup
+let popup = document.getElementById("popUp");
+
+function openPopup(){
+    popup.classList.add("open-popup"); // Add class to show popup
+}
+
+function closePopup(){
+    popup.classList.remove("open-popup"); // Remove class to hide popup
+}
+</script>   
+</body>
+</html>

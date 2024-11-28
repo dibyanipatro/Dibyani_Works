@@ -1,0 +1,54 @@
+/* Style for the body of the page */
+body{
+    background: #f5e8c6; /* Light background color */
+}
+
+/* Style for the title of the page */
+body h1{
+    font-size: 50px; /* Large font size */
+    font-weight: 600; /* Bold text */
+    text-align: center; /* Centered text */
+    color: blue; /* Blue text color */
+}
+
+/* Style for the stopwatch container */
+.stopwatch{
+    width: 90%; /* Width is 90% of the parent container */
+    max-width: 600px; /* Maximum width of 600px */
+    background-image: linear-gradient(rgba(142, 135, 135, 0.081), rgba(193, 130, 197, 0.8)), url(images\background.jpg);
+    /* Background with gradient overlay and image */
+    background-size: cover; /* Cover the entire container */
+    background-position: center; /* Center the background image */
+    text-align: center; /* Centered text */
+    padding: 40px 0; /* Vertical padding */
+    color: black; /* Black text color */
+    font-weight: 500; /* Medium weight text */
+    margin: 200px auto 0; /* Center horizontally and add top margin */
+    box-shadow: 0 10px 10px rgba(0,0,0,0.2); /* Shadow effect */
+}
+
+/* Style for the time display inside the stopwatch */
+.stopwatch h1{
+    margin-top: 60px; /* Top margin */
+    font-size: 64px; /* Large font size */
+    font-weight: 300; /* Light weight text */
+}
+
+/* Style for the container of buttons */
+.buttons{
+    display: flex; /* Flexbox layout */
+    align-items: center; /* Center items vertically */
+    justify-content: center; /* Center items horizontally */
+}
+
+/* Style for the buttons (images) */
+.buttons img{
+    width: 50px; /* Width of 50px */
+    margin: 0 20px; /* Horizontal margin */
+    cursor: pointer; /* Pointer cursor on hover */
+}
+
+/* Specific style for the play button to make it larger */
+.buttons img:nth-child(2){
+    width: 72px; /* Larger width for the play button */
+}
